@@ -32,6 +32,7 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     
     private var names = Set<String>()
     private var nextRepoID: Int? = nil
+    private var fetchingID: Int? = nil
     
     private weak var timer: Timer?
 
@@ -94,6 +95,17 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     }
     
     // MARK: - Scroll view
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView,
+                                   withVelocity velocity: CGPoint,
+                                   targetContentOffset: UnsafeMutablePointer<CGPoint>)
+    {
+        let maxY = scrollView.contentSize.height -
+                   scrollView.frame.height
+        guard targetContentOffset.pointee.y >= maxY else { return }
+        
+        fetchList()
+    }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         searchBar.resignFirstResponder()
@@ -173,6 +185,14 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     }
     
     private func fetchList() {
+        if let fetchingID = fetchingID {
+            guard nextRepoID != fetchingID else {
+                print("Duplicate call")
+                return
+            }
+        }
+        fetchingID = nextRepoID
+        
         let urlString = "https://api.github.com/repositories"
         let parameters: [String: Any]? = {
             if let id = nextRepoID {
@@ -190,14 +210,12 @@ UISearchControllerDelegate, UISearchResultsUpdating {
                 guard let list = obj as? [[String: Any]] else { return }
                 
                 self.makeList(from: list)
-                
             }
             .failure {
                 print($0, $1)
             }
 
         KRClient.shared.make(httpRequest: req)
-        
     }
     
     private func makeList(from rawList: [[String: Any]]) {

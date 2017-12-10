@@ -19,7 +19,7 @@ class RepoOwnerCell: UICollectionViewCell {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var label: UILabel!
     
-    private var urlString: String?
+    private(set) var name: String?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,34 +33,18 @@ class RepoOwnerCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        urlString = nil
+        name = nil
         imageView.image = nil
         label.text = nil
     }
     
-    func set(urlString: String, name: String) {
-        self.urlString = urlString
+    func set(name: String) {
+        self.name = name
         label.text = name
-        
-        do {
-            let req = try Request(method: .GET,
-                              urlString: urlString,
-                              parameters: nil)
-                .data {
-                    guard self.urlString == $1.url!.absoluteString else {
-                        print("rejected: \(urlString) \(name)")
-                        return
-                    }
-                    self.imageView.image = UIImage(data: $0)
-                }
-                .failure {
-                    print($0, $1)
-                }
-            
-            KRClient.shared.make(httpRequest: req)
-        } catch {
-            print(error)
-        }
+    }
+    
+    func set(image: UIImage) {
+        imageView.image = image
     }
     
     private func setUp() {

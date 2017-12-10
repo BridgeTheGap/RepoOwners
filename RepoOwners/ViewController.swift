@@ -30,6 +30,8 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     private var ownerList = [RepoOwner]()
     private var filteredList = [RepoOwner]()
     
+    private var imageCache = [String: UIImage]()
+    
     private var names = Set<String>()
     private var nextRepoID: Int? = nil
     private var fetchingID: Int? = nil
@@ -51,7 +53,8 @@ UISearchControllerDelegate, UISearchResultsUpdating {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        imageCache.removeAll()
     }
     
     // MARK: - Search bar
@@ -84,11 +87,18 @@ UISearchControllerDelegate, UISearchResultsUpdating {
         if filteredList.count > 0 {
             let owner = filteredList[indexPath.item]
             
-            cell.set(urlString: owner.avatarURL,
-                     name: owner.name)
+            if let image = imageCache[owner.avatarURL] {
+                print("using cache")
+                cell.set(image: image)
+            } else {
+                requestImage(forCell: cell,
+                             name: owner.name,
+                             url: owner.avatarURL)
+            }
+            
+            cell.set(name: owner.name)
         } else {
-            cell.set(urlString: "",
-                     name: "Empty")
+            cell.set(name: "Empty")
         }
         
         return cell
@@ -250,6 +260,37 @@ UISearchControllerDelegate, UISearchResultsUpdating {
         }
         
         collectionView.reloadData()
+    }
+    
+    private func requestImage(forCell cell: RepoOwnerCell,
+                              name: String,
+                              url: String)
+    {
+        do {
+            let req = try Request(method: .GET,
+                                  urlString: url,
+                                  parameters: nil)
+                .data {
+                    guard cell.name == name else {
+                        print("cell assigned to a different user")
+                        return
+                    }
+                    guard let image = UIImage(data: $0) else {
+                        print("failed to convert to image")
+                        return
+                    }
+                    
+                    self.imageCache[url] = image
+                    cell.set(image: image)
+                }
+                .failure {
+                    print($0, $1)
+                }
+            
+            KRClient.shared.make(httpRequest: req)
+        } catch {
+            print(error)
+        }
     }
 
 }

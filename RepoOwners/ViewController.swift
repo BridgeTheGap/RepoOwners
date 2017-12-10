@@ -62,9 +62,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.cellID,
                                                       for: indexPath) as! RepoOwnerCell
-        cell.backgroundColor = UIColor.red
+        let owner = ownerList[indexPath.item]
+        
         cell.imageView.backgroundColor = UIColor.yellow
-        cell.label.backgroundColor = UIColor.blue
+        cell.label.text = owner.name
         
         return cell
     }
@@ -89,7 +90,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        collectionView.backgroundColor = UIColor.gray
+        collectionView.backgroundColor = UIColor.lightGray
         
         view.addSubview(collectionView)
         self.collectionView = collectionView
@@ -178,6 +179,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             
             ownerList.append(RepoOwner(avatarURL: url,
                                        name: name))
+        }
+        
+        if rawList.count > 0 {
+            nextRepoID = rawList.last!.int("id")
         }
         
         collectionView.reloadData()

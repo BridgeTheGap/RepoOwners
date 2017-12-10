@@ -35,6 +35,8 @@ class RepoOwnerCell: UICollectionViewCell {
     }
     
     private func setUp() {
+        backgroundColor = UIColor.white
+        
         imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         

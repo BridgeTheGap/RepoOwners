@@ -24,6 +24,9 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     private var searchBar: UISearchBar {
         return searchController.searchBar
     }
+    private var searchText: String {
+        return searchBar.text ?? ""
+    }
     
     private weak var collectionView: UICollectionView!
     
@@ -75,7 +78,10 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int
     {
-        return max(filteredList.count, 1)
+        let showLoadingCell = searchText.isEmpty
+        let count = showLoadingCell ? filteredList.count + 1 : filteredList.count
+        
+        return max(count, 1)
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -84,7 +90,7 @@ UISearchControllerDelegate, UISearchResultsUpdating {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.cellID,
                                                       for: indexPath) as! RepoOwnerCell
         
-        if filteredList.count > 0 {
+        if indexPath.item != filteredList.count {
             let owner = filteredList[indexPath.item]
             
             if let image = imageCache[owner.avatarURL] {
@@ -98,7 +104,11 @@ UISearchControllerDelegate, UISearchResultsUpdating {
             
             cell.set(name: owner.name)
         } else {
-            cell.set(name: "Empty")
+            if filteredList.count == 0 {
+                cell.set(name: "Empty")
+            } else {
+                cell.toggleIndicator(true)
+            }
         }
         
         return cell
@@ -110,6 +120,8 @@ UISearchControllerDelegate, UISearchResultsUpdating {
                                    withVelocity velocity: CGPoint,
                                    targetContentOffset: UnsafeMutablePointer<CGPoint>)
     {
+        guard filteredList.count == ownerList.count else { return }
+        
         let maxY = scrollView.contentSize.height -
                    scrollView.frame.height
         guard targetContentOffset.pointee.y >= maxY else { return }
@@ -229,6 +241,8 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     }
     
     private func makeList(from rawList: [[String: Any]]) {
+        var indexPaths = [IndexPath]()
+        
         for dictionary in rawList {
             let owner = dictionary.dic("owner")!
             let url = owner.str("avatar_url")!
@@ -239,6 +253,8 @@ UISearchControllerDelegate, UISearchResultsUpdating {
             
             guard names.count > preCount else { print("skipping \(name)"); continue }
             
+            indexPaths.append(IndexPath(item: ownerList.count,
+                                        section: 0))
             ownerList.append(RepoOwner(avatarURL: url,
                                        name: name))
         }
@@ -247,11 +263,16 @@ UISearchControllerDelegate, UISearchResultsUpdating {
             nextRepoID = rawList.last!.int("id")
         }
         
-        filterSearch(nil)
+        if searchText.isEmpty {
+            filteredList = ownerList
+            collectionView.insertItems(at: indexPaths)
+        } else {
+            print("displaying searched results")
+        }
     }
     
     private func filterSearch(_ timer: Timer?) {
-        if let searchText = searchBar.text, !searchText.isEmpty {
+        if !searchText.isEmpty {
             filteredList = ownerList.filter {
                 $0.name.localizedCaseInsensitiveContains(searchText)
             }

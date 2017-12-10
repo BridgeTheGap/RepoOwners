@@ -18,6 +18,7 @@ class RepoOwnerCell: UICollectionViewCell {
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var label: UILabel!
+    private var indicator: UIActivityIndicatorView!
     
     private(set) var name: String?
     
@@ -36,6 +37,7 @@ class RepoOwnerCell: UICollectionViewCell {
         name = nil
         imageView.image = nil
         label.text = nil
+        toggleIndicator(false)
     }
     
     func set(name: String) {
@@ -47,6 +49,18 @@ class RepoOwnerCell: UICollectionViewCell {
         imageView.image = image
     }
     
+    func toggleIndicator(_ flag: Bool) {
+        if flag {
+            indicator.startAnimating()
+            indicator.isHidden = false
+            
+            set(name: "Fetching list...")
+        } else {
+            indicator.isHidden = true
+            indicator.stopAnimating()
+        }
+    }
+    
     private func setUp() {
         backgroundColor = UIColor.white
         
@@ -56,8 +70,13 @@ class RepoOwnerCell: UICollectionViewCell {
         label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         
+        indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.isHidden = true
+        
         addSubview(imageView)
         addSubview(label)
+        addSubview(indicator)
         
         let views: [String: Any] = [
             "imageView": imageView,
@@ -92,6 +111,20 @@ class RepoOwnerCell: UICollectionViewCell {
                                multiplier: 1.0,
                                constant: 0.0),
             NSLayoutConstraint(item: label,
+                               attribute: .centerY,
+                               relatedBy: .equal,
+                               toItem: self,
+                               attribute: .centerY,
+                               multiplier: 1.0,
+                               constant: 0.0),
+            NSLayoutConstraint(item: indicator,
+                               attribute: .centerX,
+                               relatedBy: .equal,
+                               toItem: self,
+                               attribute: .centerX,
+                               multiplier: 1.0,
+                               constant: 0.0),
+            NSLayoutConstraint(item: indicator,
                                attribute: .centerY,
                                relatedBy: .equal,
                                toItem: self,

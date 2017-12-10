@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import KRClient
 
 class RepoOwnerCell: UICollectionViewCell {
     
@@ -15,8 +16,10 @@ class RepoOwnerCell: UICollectionViewCell {
         static let imageViewSize: CGFloat = 40.0
     }
     
-    @IBOutlet private(set) var imageView: UIImageView!
-    @IBOutlet private(set) var label: UILabel!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var label: UILabel!
+    
+    private var urlString: String?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,8 +33,34 @@ class RepoOwnerCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        urlString = nil
         imageView.image = nil
         label.text = nil
+    }
+    
+    func set(urlString: String, name: String) {
+        self.urlString = urlString
+        label.text = name
+        
+        do {
+            let req = try Request(method: .GET,
+                              urlString: urlString,
+                              parameters: nil)
+                .data {
+                    guard self.urlString == $1.url!.absoluteString else {
+                        print("rejected: \(urlString) \(name)")
+                        return
+                    }
+                    self.imageView.image = UIImage(data: $0)
+                }
+                .failure {
+                    print($0, $1)
+                }
+            
+            KRClient.shared.make(httpRequest: req)
+        } catch {
+            print(error)
+        }
     }
     
     private func setUp() {

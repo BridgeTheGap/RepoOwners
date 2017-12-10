@@ -10,7 +10,8 @@ import UIKit
 import KRClient
 import EdgeJSON
 
-class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchControllerDelegate {
+class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate,
+UISearchControllerDelegate, UISearchResultsUpdating {
     
     private struct Constant {
         static let cellID = "RepoOwnerCell"
@@ -33,6 +34,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        automaticallyAdjustsScrollViewInsets = false
         setSubViews()
     }
     
@@ -49,6 +51,14 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     // MARK: - Search bar
     
+    func presentSearchController(_ searchController: UISearchController) {
+        
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+    }
+    
     // MARK: - Collection view
     
     func collectionView(_ collectionView: UICollectionView,
@@ -64,10 +74,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                                                       for: indexPath) as! RepoOwnerCell
         let owner = ownerList[indexPath.item]
         
-        cell.imageView.backgroundColor = UIColor.yellow
-        cell.label.text = owner.name
+        cell.set(urlString: owner.avatarURL,
+                 name: owner.name)
         
         return cell
+    }
+    
+    // MARK: - Scroll view
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        searchBar.resignFirstResponder()
     }
 
     // MARK: - Private
@@ -102,6 +118,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     private func setUpSearchBar() {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchBar)
+        
+        searchController.delegate = self
+        searchController.hidesNavigationBarDuringPresentation = false
+//        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchResultsUpdater = self
     }
     
     private func setConstraints() {

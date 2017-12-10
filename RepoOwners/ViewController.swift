@@ -63,6 +63,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.cellID,
                                                       for: indexPath) as! RepoOwnerCell
         cell.backgroundColor = UIColor.red
+        cell.imageView.backgroundColor = UIColor.yellow
+        cell.label.backgroundColor = UIColor.blue
+        
         return cell
     }
 

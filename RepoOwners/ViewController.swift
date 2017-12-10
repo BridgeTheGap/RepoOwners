@@ -8,7 +8,6 @@
 
 import UIKit
 import KRClient
-import EdgeJSON
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate,
                       UISearchControllerDelegate, UISearchResultsUpdating
@@ -273,7 +272,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         for dictionary in rawList {
             let owner = dictionary.dic("owner")!
             let url = owner.str("avatar_url")!
-            let name = dictionary.str("name")!
+            let name = owner.str("login")!
             
             let preCount = names.count
             names.insert(name)

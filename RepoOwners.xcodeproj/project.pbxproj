@@ -16,6 +16,7 @@
 		034EF24D1FDD3BAF0080BFCB /* RepoOwnersUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034EF24C1FDD3BAF0080BFCB /* RepoOwnersUITests.swift */; };
 		034EF25B1FDD3C1E0080BFCB /* RepoOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034EF25A1FDD3C1E0080BFCB /* RepoOwner.swift */; };
 		034EF25D1FDD4BCA0080BFCB /* RepoOwnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034EF25C1FDD4BCA0080BFCB /* RepoOwnerCell.swift */; };
+		034EF2611FDDEBC10080BFCB /* Dictionary+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034EF2601FDDEBC10080BFCB /* Dictionary+JSON.swift */; };
 		12DBF11C7B36171493AE612F /* Pods_RepoOwners.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF722B03BB13C39E8C00E327 /* Pods_RepoOwners.framework */; };
 		B3E497F424220E0D4F30A4B6 /* Pods_RepoOwnersUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8690EBBF098C8D61E571077 /* Pods_RepoOwnersUITests.framework */; };
 		E8EF60F6AB2798996ADC74B4 /* Pods_RepoOwnersTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCBDF967533514E56E7E3EF /* Pods_RepoOwnersTests.framework */; };
@@ -54,6 +55,7 @@
 		034EF24E1FDD3BAF0080BFCB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		034EF25A1FDD3C1E0080BFCB /* RepoOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoOwner.swift; sourceTree = "<group>"; };
 		034EF25C1FDD4BCA0080BFCB /* RepoOwnerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoOwnerCell.swift; sourceTree = "<group>"; };
+		034EF2601FDDEBC10080BFCB /* Dictionary+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+JSON.swift"; sourceTree = "<group>"; };
 		0DCBDF967533514E56E7E3EF /* Pods_RepoOwnersTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RepoOwnersTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16B843268E4313B7F17A6CB5 /* Pods-RepoOwnersUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RepoOwnersUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RepoOwnersUITests/Pods-RepoOwnersUITests.release.xcconfig"; sourceTree = "<group>"; };
 		350D51C1A51908F020D9FD12 /* Pods-RepoOwners.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RepoOwners.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RepoOwners/Pods-RepoOwners.debug.xcconfig"; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				034EF2331FDD3BAE0080BFCB /* Assets.xcassets */,
 				034EF2351FDD3BAE0080BFCB /* LaunchScreen.storyboard */,
 				034EF2381FDD3BAE0080BFCB /* Info.plist */,
+				034EF2601FDDEBC10080BFCB /* Dictionary+JSON.swift */,
 			);
 			path = RepoOwners;
 			sourceTree = "<group>";
@@ -428,12 +431,10 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-RepoOwners/Pods-RepoOwners-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/EdgeJSON/EdgeJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/KRClient/KRClient.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EdgeJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRClient.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -468,6 +469,7 @@
 			files = (
 				034EF25B1FDD3C1E0080BFCB /* RepoOwner.swift in Sources */,
 				034EF22F1FDD3BAE0080BFCB /* ViewController.swift in Sources */,
+				034EF2611FDDEBC10080BFCB /* Dictionary+JSON.swift in Sources */,
 				034EF22D1FDD3BAE0080BFCB /* AppDelegate.swift in Sources */,
 				034EF25D1FDD4BCA0080BFCB /* RepoOwnerCell.swift in Sources */,
 			);

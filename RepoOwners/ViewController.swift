@@ -28,8 +28,12 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     private weak var collectionView: UICollectionView!
     
     private var ownerList = [RepoOwner]()
+    private var filteredList = [RepoOwner]()
+    
     private var names = Set<String>()
     private var nextRepoID: Int? = nil
+    
+    private weak var timer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +60,10 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        
+        if let timer = timer { timer.invalidate() }
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5,
+                                     repeats: false,
+                                     block: filterSearch(_:))
     }
     
     // MARK: - Collection view
@@ -64,7 +71,7 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int
     {
-        return ownerList.count
+        return max(filteredList.count, 1)
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -72,10 +79,16 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.cellID,
                                                       for: indexPath) as! RepoOwnerCell
-        let owner = ownerList[indexPath.item]
         
-        cell.set(urlString: owner.avatarURL,
-                 name: owner.name)
+        if filteredList.count > 0 {
+            let owner = filteredList[indexPath.item]
+            
+            cell.set(urlString: owner.avatarURL,
+                     name: owner.name)
+        } else {
+            cell.set(urlString: "",
+                     name: "Empty")
+        }
         
         return cell
     }
@@ -204,6 +217,18 @@ UISearchControllerDelegate, UISearchResultsUpdating {
         
         if rawList.count > 0 {
             nextRepoID = rawList.last!.int("id")
+        }
+        
+        filterSearch(nil)
+    }
+    
+    private func filterSearch(_ timer: Timer?) {
+        if let searchText = searchBar.text, !searchText.isEmpty {
+            filteredList = ownerList.filter {
+                $0.name.localizedCaseInsensitiveContains(searchText)
+            }
+        } else {
+            filteredList = ownerList
         }
         
         collectionView.reloadData()

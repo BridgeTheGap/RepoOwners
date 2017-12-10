@@ -119,13 +119,13 @@
 			isa = PBXGroup;
 			children = (
 				034EF25A1FDD3C1E0080BFCB /* RepoOwner.swift */,
+				034EF25C1FDD4BCA0080BFCB /* RepoOwnerCell.swift */,
 				034EF22C1FDD3BAE0080BFCB /* AppDelegate.swift */,
 				034EF22E1FDD3BAE0080BFCB /* ViewController.swift */,
 				034EF2301FDD3BAE0080BFCB /* Main.storyboard */,
 				034EF2331FDD3BAE0080BFCB /* Assets.xcassets */,
 				034EF2351FDD3BAE0080BFCB /* LaunchScreen.storyboard */,
 				034EF2381FDD3BAE0080BFCB /* Info.plist */,
-				034EF25C1FDD4BCA0080BFCB /* RepoOwnerCell.swift */,
 			);
 			path = RepoOwners;
 			sourceTree = "<group>";

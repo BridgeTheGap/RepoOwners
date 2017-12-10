@@ -14,9 +14,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     private struct Constant {
         static let cellID = "RepoOwnerCell"
+        static let topMargin: CGFloat = 20.0
+        static let itemHeight: CGFloat = 60.0
+        static let itemSpacing: CGFloat = 10.0
     }
     
     private let searchController = UISearchController(searchResultsController: nil)
+    private var searchBar: UISearchBar {
+        return searchController.searchBar
+    }
+    
     private weak var collectionView: UICollectionView!
     
     private var ownerList = [RepoOwner]()
@@ -25,6 +32,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setSubViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         fetchList()
     }
@@ -49,7 +62,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.cellID,
                                                       for: indexPath) as! RepoOwnerCell
-        
+        cell.backgroundColor = UIColor.red
         return cell
     }
 
@@ -57,47 +70,68 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     private func setSubViews() {
         setUpCollectionView()
-        
-        view.addSubview(searchController.searchBar)
-        
-        let idCollectionView = "collectionView"
-        let idSearchBar = "searchBar"
-        
-        let dicViews: [String: Any] = [
-            idCollectionView: collectionView,
-            idSearchBar: searchController.searchBar,
-        ]
-        
-        let constraints =
-            NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(idCollectionView)]|",
-                                       options: [],
-                                       metrics: nil,
-                                       views: dicViews) +
-            NSLayoutConstraint.constraints(withVisualFormat: "V:|[\(idCollectionView)]|",
-                                           options: [],
-                                           metrics: nil,
-                                           views: dicViews) +
-            NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(idSearchBar)]|",
-                                           options: [],
-                                           metrics: nil,
-                                           views: dicViews) +
-            NSLayoutConstraint.constraints(withVisualFormat: "V:|[\(idSearchBar)]",
-                                           options: [],
-                                           metrics: nil,
-                                           views: dicViews)
-        
-        NSLayoutConstraint.activate(constraints)
+        setUpSearchBar()
+        setConstraints()
     }
     
     private func setUpCollectionView() {
-        let collectionView = UICollectionView()
-        collectionView.collectionViewLayout = UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width,
+                                 height: Constant.itemHeight)
+        layout.minimumLineSpacing = Constant.itemSpacing
+        
+        let collectionView = UICollectionView(frame: CGRect.zero,
+                                              collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        collectionView.backgroundColor = UIColor.gray
         
         view.addSubview(collectionView)
         self.collectionView = collectionView
         
         collectionView.register(RepoOwnerCell.self,
                                 forCellWithReuseIdentifier: Constant.cellID)
+    }
+    
+    private func setUpSearchBar() {
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(searchBar)
+    }
+    
+    private func setConstraints() {
+        let idCollectionView = "collectionView"
+        let idSearchBar = "searchBar"
+        
+        let dicViews: [String: Any] = [
+            idCollectionView: collectionView,
+            idSearchBar: searchController.searchBar,
+            ]
+        
+        let constraints =
+            NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(idCollectionView)]|",
+                options: [],
+                metrics: nil,
+                views: dicViews) +
+            NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(Constant.topMargin)-[\(idCollectionView)]|",
+                options: [],
+                metrics: nil,
+                views: dicViews) +
+            NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(idSearchBar)]|",
+                options: [],
+                metrics: nil,
+                views: dicViews) +
+            NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(Constant.topMargin)-[\(idSearchBar)]",
+                options: [],
+                metrics: nil,
+                views: dicViews)
+        
+        NSLayoutConstraint.activate(constraints)
+        
+        let inset = searchBar.bounds.height
+        collectionView.contentInset.top = inset
+        collectionView.scrollIndicatorInsets.top = inset
     }
     
     private func fetchList() {
@@ -143,7 +177,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                                        name: name))
         }
         
-        print(ownerList)
+        collectionView.reloadData()
     }
 
 }

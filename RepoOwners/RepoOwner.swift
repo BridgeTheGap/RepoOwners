@@ -8,7 +8,18 @@
 
 import Foundation
 
-struct RepoOwner {
+struct RepoOwner: Hashable {
+    
+    static func ==(lhs: RepoOwner, rhs: RepoOwner) -> Bool {
+        return lhs.avatarURL == rhs.avatarURL &&
+            lhs.name == rhs.name
+    }
+    
+    var hashValue: Int {
+        let const = 0x7FFF_FFFF_FFFF_FFFF
+        return avatarURL.hash & const +
+            name.hash & const
+    }
     
     let avatarURL: String
     let name: String

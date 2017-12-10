@@ -1,0 +1,27 @@
+PODS:
+  - EdgeJSON (0.1.0)
+  - KRClient (1.1.2)
+
+DEPENDENCIES:
+  - EdgeJSON (from `~/Documents/iOS/Libraries/EdgeJSON`)
+  - KRClient (from `https://github.com/BridgeTheGap/KRClient.git`, branch `dev`)
+
+EXTERNAL SOURCES:
+  EdgeJSON:
+    :path: ~/Documents/iOS/Libraries/EdgeJSON
+  KRClient:
+    :branch: dev
+    :git: https://github.com/BridgeTheGap/KRClient.git
+
+CHECKOUT OPTIONS:
+  KRClient:
+    :commit: a52bb28754c6cdbfbe314bb47a11cc9c1a18e908
+    :git: https://github.com/BridgeTheGap/KRClient.git
+
+SPEC CHECKSUMS:
+  EdgeJSON: 4ccb0e7e4adb47cf273589b10b4549760d774667
+  KRClient: 4a7d8ab7d3076bc3805183d0722517abf5090780
+
+PODFILE CHECKSUM: e4bf3318bd18cbc89a1b31f3c57d2f1b102a9817
+
+COCOAPODS: 1.3.1

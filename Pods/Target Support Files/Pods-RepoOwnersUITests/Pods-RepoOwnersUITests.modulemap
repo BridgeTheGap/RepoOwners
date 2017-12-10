@@ -1,0 +1,6 @@
+framework module Pods_RepoOwnersUITests {
+  umbrella header "Pods-RepoOwnersUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

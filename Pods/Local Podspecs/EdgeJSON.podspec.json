@@ -1,0 +1,22 @@
+{
+  "name": "EdgeJSON",
+  "version": "0.1.0",
+  "summary": "A set of extensions for JSON type",
+  "description": "EdgeJSON contains a set of useful extensions for [String: Any] type in Swift.\nUsing the JSON static functions, you can handle all errors in one place: the `errorHandler`.\nBy doing this, your code does not have to be riddled with `do-catch`s and `try`s.",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/EdgeJSON",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Joshua Park": "joshuaparkwm@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/EdgeJSON.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "EdgeJSON/Classes/**/*"
+}

@@ -11,7 +11,14 @@ import KRClient
 import EdgeJSON
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate,
-UISearchControllerDelegate, UISearchResultsUpdating {
+                      UISearchControllerDelegate, UISearchResultsUpdating
+{
+    static func initWithNavigationController() -> UINavigationController {
+        let vc = ViewController()
+        let navController = UINavigationController(rootViewController: vc)
+        
+        return navController
+    }
     
     private struct Constant {
         static let cellID = "RepoOwnerCell"
@@ -44,8 +51,7 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        automaticallyAdjustsScrollViewInsets = false
-        setSubViews()
+        setSubviews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,7 +69,33 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     // MARK: - Search bar
     
     func presentSearchController(_ searchController: UISearchController) {
+        let views = ["searchBar": searchBar]
+        let constraints =
+            NSLayoutConstraint.constraints(withVisualFormat: "H:|[searchBar]|",
+                                           options: [],
+                                           metrics: nil,
+                                           views: views) +
+            NSLayoutConstraint.constraints(withVisualFormat: "V:|[searchBar]",
+                                               options: [],
+                                               metrics: nil,
+                                               views: views)
         
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+        let views = ["searchBar": searchBar]
+        let constraints =
+            NSLayoutConstraint.constraints(withVisualFormat: "H:|[searchBar]|",
+                                           options: [],
+                                           metrics: nil,
+                                           views: views) +
+            NSLayoutConstraint.constraints(withVisualFormat: "V:|[searchBar]",
+                                           options: [],
+                                           metrics: nil,
+                                           views: views)
+        
+        NSLayoutConstraint.activate(constraints)
     }
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -130,14 +162,14 @@ UISearchControllerDelegate, UISearchResultsUpdating {
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        searchBar.resignFirstResponder()
+        searchController.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Private
     
-    private func setSubViews() {
+    private func setSubviews() {
         setUpCollectionView()
-        setUpSearchBar()
+        setUpSearchController()
         setConstraints()
     }
     
@@ -162,21 +194,28 @@ UISearchControllerDelegate, UISearchResultsUpdating {
                                 forCellWithReuseIdentifier: Constant.cellID)
     }
     
-    private func setUpSearchBar() {
+    private func setUpSearchController() {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(searchBar)
+        searchBar.searchBarStyle = .minimal
         
         searchController.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
-//        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
+        
+        definesPresentationContext = true
+        navigationItem.titleView = searchBar
     }
     
     private func setConstraints() {
         let idCollectionView = "collectionView"
         let idSearchBar = "searchBar"
         
-        let dicViews: [String: Any] = [
+        let metrics: [String: Any] = [
+            "top": Constant.topMargin,
+            "sbHeight": searchBar.bounds.height,
+        ]
+        let views: [String: Any] = [
             idCollectionView: collectionView,
             idSearchBar: searchController.searchBar,
             ]
@@ -184,26 +223,14 @@ UISearchControllerDelegate, UISearchResultsUpdating {
         let constraints =
             NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(idCollectionView)]|",
                 options: [],
-                metrics: nil,
-                views: dicViews) +
-            NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(Constant.topMargin)-[\(idCollectionView)]|",
+                metrics: metrics,
+                views: views) +
+            NSLayoutConstraint.constraints(withVisualFormat: "V:|[\(idCollectionView)]|",
                 options: [],
-                metrics: nil,
-                views: dicViews) +
-            NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(idSearchBar)]|",
-                options: [],
-                metrics: nil,
-                views: dicViews) +
-            NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(Constant.topMargin)-[\(idSearchBar)]",
-                options: [],
-                metrics: nil,
-                views: dicViews)
+                metrics: metrics,
+                views: views)
         
         NSLayoutConstraint.activate(constraints)
-        
-        let inset = searchBar.bounds.height
-        collectionView.contentInset.top = inset
-        collectionView.scrollIndicatorInsets.top = inset
     }
     
     private func fetchList() {

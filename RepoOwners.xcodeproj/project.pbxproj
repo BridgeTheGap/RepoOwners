@@ -14,6 +14,7 @@
 		034EF2371FDD3BAE0080BFCB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 034EF2351FDD3BAE0080BFCB /* LaunchScreen.storyboard */; };
 		034EF2421FDD3BAF0080BFCB /* RepoOwnersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034EF2411FDD3BAF0080BFCB /* RepoOwnersTests.swift */; };
 		034EF24D1FDD3BAF0080BFCB /* RepoOwnersUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034EF24C1FDD3BAF0080BFCB /* RepoOwnersUITests.swift */; };
+		034EF25B1FDD3C1E0080BFCB /* RepoOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034EF25A1FDD3C1E0080BFCB /* RepoOwner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		034EF2481FDD3BAF0080BFCB /* RepoOwnersUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepoOwnersUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		034EF24C1FDD3BAF0080BFCB /* RepoOwnersUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoOwnersUITests.swift; sourceTree = "<group>"; };
 		034EF24E1FDD3BAF0080BFCB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		034EF25A1FDD3C1E0080BFCB /* RepoOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoOwner.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 		034EF22B1FDD3BAE0080BFCB /* RepoOwners */ = {
 			isa = PBXGroup;
 			children = (
+				034EF25A1FDD3C1E0080BFCB /* RepoOwner.swift */,
 				034EF22C1FDD3BAE0080BFCB /* AppDelegate.swift */,
 				034EF22E1FDD3BAE0080BFCB /* ViewController.swift */,
 				034EF2301FDD3BAE0080BFCB /* Main.storyboard */,
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				034EF25B1FDD3C1E0080BFCB /* RepoOwner.swift in Sources */,
 				034EF22F1FDD3BAE0080BFCB /* ViewController.swift in Sources */,
 				034EF22D1FDD3BAE0080BFCB /* AppDelegate.swift in Sources */,
 			);
@@ -427,6 +431,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 78S7RATURK;
 				INFOPLIST_FILE = RepoOwners/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.test.RepoOwners;
@@ -441,6 +446,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 78S7RATURK;
 				INFOPLIST_FILE = RepoOwners/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.test.RepoOwners;
